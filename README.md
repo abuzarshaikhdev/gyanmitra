@@ -1,24 +1,24 @@
-# GyanMitra — Adaptive AI Learning Agent
+# GyanMitra - Adaptive AI Learning Agent
 **IBM SkillsBuild · Masterclass 5 · SDG 4: Quality Education**
 
 ## Architecture
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    Browser (index.html)                  │
-│   Student Chat UI  ←→  Teacher Dashboard               │
-└───────────────────────┬────────────────────────────────┘
+│                    Browser (index.html)                 │
+│   Student Chat UI  ←→  Teacher Dashboard                │
+└───────────────────────┬─────────────────────────────────┘
                         │ REST API (JSON)
-┌───────────────────────▼────────────────────────────────┐
+┌───────────────────────▼─────────────────────────────────┐
 │              Flask API  (api/app.py)                    │
 │                                                         │
 │  POST /api/chat          NLU → Dialog → Action          │
 │  GET  /api/escalations   Teacher dashboard feed         │
 │  POST /api/escalations/<id>/resolve                     │
 │  GET  /api/session/<id>  Session + turn history         │
-└────────────┬──────────────────────┬────────────────────┘
+└────────────┬──────────────────────┬─────────────────────┘
              │                      │
-┌────────────▼──────────┐  ┌───────▼──────────────────┐
+┌────────────▼──────────┐  ┌───────▼───────────────────┐
 │   NLU Engine          │  │   SQLite Database         │
 │   (api/nlu.py)        │  │   (data/gyanmitra.db)     │
 │                       │  │                           │
@@ -26,7 +26,7 @@
 │  Logistic Regression  │  │  sessions  (context)      │
 │  Entity extraction    │  │  escalations              │
 │                       │  │  turn_log  (audit trail)  │
-└────────────┬──────────┘  └──────────────────────────┘
+└────────────┬──────────┘  └───────────────────────────┘
              │
 ┌────────────▼──────────┐
 │   Dialog Manager      │
@@ -63,7 +63,7 @@ python run.py
 | `models/train_intent_classifier.py` | Trains TF-IDF + Logistic Regression on 80+ labelled examples; saves `intent_classifier.pkl`, `entity_data.json`, `topic_tips.json` |
 | `api/nlu.py` | Loads trained model; `analyse(text)` returns intent, confidence, subject, topic |
 | `api/dialog.py` | Maps (intent, entities, context) → reply + escalation flag |
-| `api/db.py` | SQLite helpers — students, sessions, escalations, turn_log tables |
+| `api/db.py` | SQLite helpers - students, sessions, escalations, turn_log tables |
 | `api/app.py` | Flask REST API with 5 endpoints |
 | `run.py` | Entry point; prints URL and starts server |
 | `frontend/index.html` | Student chat UI + Teacher dashboard; calls API; graceful local fallback |
@@ -79,7 +79,7 @@ Response: { "reply": "...", "intent": "ask_help", "confidence": 0.80,
 ```
 
 ### GET /api/escalations
-Returns all open escalation records — topics where a student has been confused ≥ 2 times.
+Returns all open escalation records - topics where a student has been confused ≥ 2 times.
 
 ### POST /api/escalations/{id}/resolve
 Mark an escalation as resolved (teacher has followed up).
